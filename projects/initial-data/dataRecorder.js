@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 export class DataRecorder {
   constructor(fileName, columns = []) {
@@ -9,6 +10,8 @@ export class DataRecorder {
 
   #createFile() {
     if (!fs.existsSync(this.fileName)) {
+      const dir = path.dirname(this.fileName);
+      if (dir) fs.mkdirSync(dir, { recursive: true });
       const headerLine = `${this.columns.join(',')}\n`;
       fs.writeFileSync(this.fileName, headerLine, 'utf8');
     }
